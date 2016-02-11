@@ -2,8 +2,12 @@
   - React Input component for date
   - This allows user to input date by using numbers in given format.
   - Supported formats are MM/DD/YYYY and DD/MM/YYYY.
-  - You can move around using left and right arrow and tabs.
-  - You can reset the selected date section using using backspace/delete.
+  - LeftArrow to go to left date section
+  - RightArrow to go to right date section
+  - UpArrow to decrement the selected date section
+  - DownArrow to increment the selected date section
+  - Tabs to jump to next date section
+  - Backspace/Delete to reset the selected date section.
 
 # Installation
 npm install react-controlled-date-input
