@@ -13,7 +13,11 @@
   },
   "keywords": [
     "react",
-    "reactjs"
+    "reactjs",
+    "read-date",
+    "controlled",
+    "date",
+    "input"
   ],
   "author": "Sanjeev Rana (http://github.com/ransanjeev)",
   "license": "MIT",
