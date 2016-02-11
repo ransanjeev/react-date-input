@@ -5,6 +5,8 @@ import {
   DateInputComponent,
   ArrowLeft,
   ArrowRight,
+  ArrowDown,
+  ArrowUp,
   Tab,
   Backspace,
   DateSection,
@@ -122,6 +124,20 @@ describe("DateInput", () => {
       const dateSection = FormattedDateSections[FormattedDateSections.MONTH_SECTION];
       expect(selectedSection).toEqual(dateSection);
     });
+    it("Arrow Down increases the number initialized", ()=>{
+      dateComponent.onChange('0'.charCodeAt(0), event);
+      dateComponent.onKeydown(ArrowDown, event);
+      console.log("date component", dateComponent.state);
+      let date = dateComponent.state.values[FormattedDateSections[FormattedDateSections.MONTH_SECTION]];
+      expect(date.value).toEqual('1');
+    })
+    it("Arrow Up decreases the number", ()=>{
+      dateComponent.onChange('1'.charCodeAt(0), event);
+      dateComponent.onKeydown(ArrowUp, event);
+      console.log("date component", dateComponent.state);
+      let date = dateComponent.state.values[FormattedDateSections[FormattedDateSections.MONTH_SECTION]];
+      expect(date.value).toEqual('0');
+    })
     it("Tab", ()=>{
       dateComponent.onKeydown(Tab, event);
       dateComponent.onKeydown(Tab, event);

@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -93,7 +94,7 @@ var DateSection = (function () {
         this.remainingInput = this.defaultLength;
     };
     return DateSection;
-})();
+}());
 exports.DateSection = DateSection;
 (function (FormattedDateSections) {
     FormattedDateSections[FormattedDateSections["MONTH_SECTION"] = 0] = "MONTH_SECTION";
@@ -194,6 +195,26 @@ var DateInputComponent = (function (_super) {
                 this.setState(this.state);
             }
         }
+        else if (key == exports.ArrowDown) {
+            nextSection = selectedIndex;
+            var selectedValue = this.state.values[FormattedDateSections[selectedIndex]];
+            if (selectedValue.value != "" && parseInt(selectedValue.value) >= 0) {
+                var newValue = parseInt(selectedValue.value) + 1;
+                selectedValue.value = newValue.toString();
+                this.state.values[FormattedDateSections[selectedIndex]] = selectedValue;
+                this.setState(this.state);
+            }
+        }
+        else if (key == exports.ArrowUp) {
+            nextSection = selectedIndex;
+            var selectedValue = this.state.values[FormattedDateSections[selectedIndex]];
+            if (selectedValue.value != "" && parseInt(selectedValue.value) > 0) {
+                var newValue = parseInt(selectedValue.value) - 1;
+                selectedValue.value = newValue.toString();
+                this.state.values[FormattedDateSections[selectedIndex]] = selectedValue;
+                this.setState(this.state);
+            }
+        }
         e.preventDefault();
         this.setNewSelectionRange(nextSection);
         this.callOnChangeCallback();
@@ -210,7 +231,7 @@ var DateInputComponent = (function (_super) {
             section.value += String.fromCharCode(keyChar);
             section.remainingInput -= 1;
         }
-        this.state.values[selectedDateSection] = section;
+        this.state.values[FormattedDateSections[selectedDateSection]] = section;
         this.setState(this.state);
         if (section.remainingInput == 0) {
             selectedDateSection = this.nextDateSection(selectedDateSection);
@@ -231,14 +252,14 @@ var DateInputComponent = (function (_super) {
     };
     DateInputComponent.prototype.render = function () {
         var _this = this;
-        return (React.createElement(DateInput, {"dateFormate": this.props.dateFormat, "onChange": function (key, e) {
+        return (React.createElement(DateInput, {dateFormate: this.props.dateFormat, onChange: function (key, e) {
             _this.onChange(key, e);
-        }, "onKeyDown": function (keyCode, e) {
+        }, onKeyDown: function (keyCode, e) {
             _this.onKeydown(keyCode, e);
-        }, "onSelect": function (start, end) { return _this.onSelect(start, end); }, "value": this.dateValue(), "selectedDateSection": this.state.selectedDateSection}));
+        }, onSelect: function (start, end) { return _this.onSelect(start, end); }, value: this.dateValue(), selectedDateSection: this.state.selectedDateSection}));
     };
     return DateInputComponent;
-})(React.Component);
+}(React.Component));
 exports.DateInputComponent = DateInputComponent;
 var DateInput = (function (_super) {
     __extends(DateInput, _super);
@@ -262,19 +283,19 @@ var DateInput = (function (_super) {
     DateInput.prototype.render = function () {
         var _this = this;
         var _a = this.props, onKeyDown = _a.onKeyDown, onSelect = _a.onSelect, onChange = _a.onChange;
-        return (React.createElement("div", {"className": "form-group"}, React.createElement("div", {"className": "input-group"}, React.createElement("input", {"ref": (function (ref) { return _this.el = ref; }), "type": "text", "className": "form-control", "value": this.props.value, "onChange": function (e) { }, "onKeyDown": function (e) {
+        return (React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "input-group"}, React.createElement("input", {ref: (function (ref) { return _this.el = ref; }), type: "text", className: "form-control", value: this.props.value, onChange: function (e) { }, onKeyDown: function (e) {
             if (e.keyCode >= 48 && e.keyCode <= 57) {
                 onChange(e.keyCode, e);
             }
             else {
                 onKeyDown(e.key, e);
             }
-        }, "onSelect": function (e) {
+        }, onSelect: function (e) {
             e.preventDefault();
             var _a = [_this.el.selectionStart, _this.el.selectionEnd], start = _a[0], end = _a[1];
             onSelect(start, end);
         }}))));
     };
     return DateInput;
-})(React.Component);
+}(React.Component));
 exports.DateInput = DateInput;

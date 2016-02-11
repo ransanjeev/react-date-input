@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -33,8 +34,8 @@ var Container = (function (_super) {
             date = "DD";
         }
         ;
-        return (React.createElement("div", null, React.createElement("div", null, React.createElement("h3", null, "Component"), React.createElement(DateInput_1.DateInputComponent, {"onChange": this.onChange.bind(this), "dateFormat": DateInput_1.DateFormats.DDMMYYYY})), React.createElement("div", {"className": "date-preview"}, React.createElement("h3", null, "Date Preview"), React.createElement("p", null, date + "/" + month + "/" + year))));
+        return (React.createElement("div", null, React.createElement("div", null, React.createElement("h3", null, "Component"), React.createElement(DateInput_1.DateInputComponent, {onChange: this.onChange.bind(this), dateFormat: DateInput_1.DateFormats.DDMMYYYY})), React.createElement("div", {className: "date-preview"}, React.createElement("h3", null, "Date Preview"), React.createElement("p", null, date + "/" + month + "/" + year))));
     };
     return Container;
-})(React.Component);
+}(React.Component));
 ReactDOM.render(React.createElement(Container, null), document.getElementById('root'));

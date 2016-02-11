@@ -199,6 +199,26 @@ export class DateInputComponent extends React.Component<DateInputProps, State> {
         this.setState(this.state);
       }
     }
+    else if(key == ArrowDown){
+      nextSection = selectedIndex;
+      const selectedValue = this.state.values[FormattedDateSections[selectedIndex]] as DateSection;
+      if(selectedValue.value != "" && parseInt(selectedValue.value) >= 0){
+        const newValue = parseInt(selectedValue.value) + 1;
+        selectedValue.value = newValue.toString();
+        this.state.values[FormattedDateSections[selectedIndex]] = selectedValue;
+        this.setState(this.state);
+      }
+    }
+    else if(key == ArrowUp){
+      nextSection = selectedIndex;
+      const selectedValue = this.state.values[FormattedDateSections[selectedIndex]] as DateSection;
+      if(selectedValue.value != "" && parseInt(selectedValue.value) > 0){
+        const newValue = parseInt(selectedValue.value) - 1;
+        selectedValue.value = newValue.toString();
+        this.state.values[FormattedDateSections[selectedIndex]] = selectedValue;
+        this.setState(this.state);
+      }
+    }
 
     e.preventDefault();
     this.setNewSelectionRange(nextSection);
@@ -207,6 +227,7 @@ export class DateInputComponent extends React.Component<DateInputProps, State> {
   onChange(keyChar: number, e: Event) {
     e.preventDefault();
     let {selectedDateSection} = this.state;
+
     const section = this.state.values[FormattedDateSections[selectedDateSection]] as DateSection;
 
     if (section.remainingInput == section.defaultLength) {
@@ -218,8 +239,10 @@ export class DateInputComponent extends React.Component<DateInputProps, State> {
       section.remainingInput -= 1;
     }
 
-    this.state.values[selectedDateSection] = section;
+    this.state.values[FormattedDateSections[selectedDateSection]] = section;
+
     this.setState(this.state);
+
     if (section.remainingInput == 0) {
       selectedDateSection = this.nextDateSection(selectedDateSection);
       this.setNewSelectionRange(selectedDateSection);
