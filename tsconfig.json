@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "jsx": "react",
+        "sourceMap": false,
+        "outDir": "./build"
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./node_modules/**/*.ts"
+    ],
+    "files": [
+        "./typings/jasmine/jasmine.d.ts",
+        "./typings/react/react-addons-test-utils.d.ts",
+        "./typings/react/react-dom.d.ts",
+        "./typings/react/react.d.ts",
+        "./typings/tsd.d.ts",
+        "./example/index.tsx",
+        "./src/__tests__/DateInput-test.tsx",
+        "./src/DateInput.tsx"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}
