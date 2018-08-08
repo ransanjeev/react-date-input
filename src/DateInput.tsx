@@ -221,8 +221,10 @@ export class DateInputComponent extends React.Component<DateInputProps, State> {
     }
 
     e.preventDefault();
-    this.setNewSelectionRange(nextSection);
-    this.callOnChangeCallback();
+    if (typeof nextSection !== 'undefined') {
+      this.setNewSelectionRange(nextSection);
+      this.callOnChangeCallback();
+    }
   }
   onChange(keyChar: number, e: Event) {
     e.preventDefault();

@@ -1,4 +1,3 @@
-"use strict";
 var _this = this;
 var React = require("react");
 var DateInput_1 = require("../DateInput");
@@ -11,13 +10,13 @@ describe("DateInput", function () {
     var event = new Event("Test");
     var renderer;
     var getDateInstance = function () {
-        return (React.createElement(DateInput_1.DateInput, {selectedDateSection: DateInput_1.FormattedDateSections.MONTH_SECTION, onChange: onChange, onKeyDown: onKeyDown, onSelect: onSelect, value: dateFormat, dateFormate: DateInput_1.DateFormats.MMDDYYYY}));
+        return (React.createElement(DateInput_1.DateInput, {"selectedDateSection": DateInput_1.FormattedDateSections.MONTH_SECTION, "onChange": onChange, "onKeyDown": onKeyDown, "onSelect": onSelect, "value": dateFormat, "dateFormate": DateInput_1.DateFormats.MMDDYYYY}));
     };
     it("render a component", function () {
         renderer = react_addons_test_utils_1.createRenderer();
         renderer.render(getDateInstance());
         var dateInput = renderer.getRenderOutput();
-        expect(dateInput).toEqualJSX(React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "input-group"}, React.createElement("input", {ref: function (ref) { return _this.el = ref; }, type: "text", className: "form-control", value: dateFormat, onChange: onChange, onKeyDown: onKeyDown, onSelect: onSelect}))));
+        expect(dateInput).toEqualJSX(React.createElement("div", {"className": "form-group"}, React.createElement("div", {"className": "input-group"}, React.createElement("input", {"ref": function (ref) { return _this.el = ref; }, "type": "text", "className": "form-control", "value": dateFormat, "onChange": onChange, "onKeyDown": onKeyDown, "onSelect": onSelect}))));
     });
     describe(".onSelection format MM/DD/YYYY", function () {
         var dateComponent;
@@ -46,7 +45,7 @@ describe("DateInput", function () {
     describe(".onSelection format DD/MM/YYYY", function () {
         var dateComponent;
         beforeEach(function () {
-            dateComponent = react_addons_test_utils_1.renderIntoDocument(React.createElement(DateInput_1.DateInputComponent, {dateFormat: DateInput_1.DateFormats.DDMMYYYY}));
+            dateComponent = react_addons_test_utils_1.renderIntoDocument(React.createElement(DateInput_1.DateInputComponent, {"dateFormat": DateInput_1.DateFormats.DDMMYYYY}));
         });
         it("selects month", function () {
             dateComponent.onSelect(1, 1);
