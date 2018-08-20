@@ -305,6 +305,9 @@ export class DateInput extends React.Component<InputProps, {}> {
     const {start, end} = selectedFormate[selectedSection];
     this.el.setSelectionRange(start, end);
   }
+  isSupportedDigits(keyCode) {
+    return keyCode >= 48 && keyCode <= 57 || keyCode >= 97 && keyCode <= 105;
+  }
   render() {
     const {onKeyDown, onSelect, onChange} = this.props;
 
@@ -318,8 +321,12 @@ export class DateInput extends React.Component<InputProps, {}> {
             value={this.props.value}
             onChange={(e) => { } }
             onKeyDown={(e) => {
-              if (e.keyCode >= 48 && e.keyCode <= 57) {
-                onChange(e.keyCode, e);
+              let keyCode = e.keyCode;
+              if (this.isSupportedDigits(keyCode)) {
+                if (keyCode >= 97 && keyCode <= 105) {
+                  keyCode = keyCode - 48;
+                }
+                onChange(keyCode, e);
               }
               else {
                 onKeyDown(e.key, e);
