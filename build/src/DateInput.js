@@ -282,7 +282,7 @@ var DateInput = (function (_super) {
         this.el.setSelectionRange(start, end);
     };
     DateInput.prototype.isSupportedDigits = function (keyCode) {
-        return keyCode >= 48 && keyCode <= 57 || keyCode >= 97 && keyCode <= 105;
+        return keyCode >= 48 && keyCode <= 57 || keyCode >= 96 && keyCode <= 105;
     };
     DateInput.prototype.render = function () {
         var _this = this;
@@ -290,7 +290,7 @@ var DateInput = (function (_super) {
         return (React.createElement("div", {"className": "form-group"}, React.createElement("div", {"className": "input-group"}, React.createElement("input", {"ref": (function (ref) { return _this.el = ref; }), "type": "text", "className": "form-control", "value": this.props.value, "onChange": function (e) { }, "onKeyDown": function (e) {
             var keyCode = e.keyCode;
             if (_this.isSupportedDigits(keyCode)) {
-                if (keyCode >= 97 && keyCode <= 105) {
+                if (keyCode >= 96 && keyCode <= 105) {
                     keyCode = keyCode - 48;
                 }
                 onChange(keyCode, e);
