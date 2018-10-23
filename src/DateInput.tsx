@@ -110,6 +110,12 @@ interface DateInputProps {
   dateFormat?: DateFormats;
 }
 
+Number['isInteger'] = Number['isInteger'] || function(value) {
+  return typeof value === 'number' &&
+    isFinite(value) &&
+    Math.floor(value) === value;
+};
+
 export class DateInputComponent extends React.Component<DateInputProps, State> {
   constructor(props) {
     super(props);
@@ -226,18 +232,18 @@ export class DateInputComponent extends React.Component<DateInputProps, State> {
       this.callOnChangeCallback();
     }
   }
-  onChange(keyChar: number, e: Event) {
+  onChange(keyChar: number, e: any) {
     e.preventDefault();
     let {selectedDateSection} = this.state;
 
     const section = this.state.values[FormattedDateSections[selectedDateSection]] as DateSection;
 
     if (section.remainingInput == section.defaultLength) {
-      section.value = String.fromCharCode(keyChar);
+      section.value = e.key || e.data;
       section.remainingInput -= 1;
     }
     else if (section.remainingInput > 0) {
-      section.value += String.fromCharCode(keyChar);
+      section.value = section.value.concat(e.key || e.data);
       section.remainingInput -= 1;
     }
 
@@ -305,8 +311,19 @@ export class DateInput extends React.Component<InputProps, {}> {
     const {start, end} = selectedFormate[selectedSection];
     this.el.setSelectionRange(start, end);
   }
-  isSupportedDigits(keyCode) {
-    return keyCode >= 48 && keyCode <= 57 || keyCode >= 96 && keyCode <= 105;
+  handleInput = (event: any) => {
+      if (this.isSupportedDigits(event.data)) {
+          this.props.onChange(undefined, event);
+      }
+  }
+  componentDidMount() {
+      this.el.addEventListener('input', this.handleInput);
+  }
+  componentWillUnmount() {
+      this.el.removeEventListener('input', this.handleInput);
+  }
+  isSupportedDigits(key: string) {
+    return Number['isInteger'](parseInt(key));
   }
   render() {
     const {onKeyDown, onSelect, onChange} = this.props;
@@ -321,12 +338,8 @@ export class DateInput extends React.Component<InputProps, {}> {
             value={this.props.value}
             onChange={(e) => { } }
             onKeyDown={(e) => {
-              let keyCode = e.keyCode;
-              if (this.isSupportedDigits(keyCode)) {
-                if (keyCode >= 96 && keyCode <= 105) {
-                  keyCode = keyCode - 48;
-                }
-                onChange(keyCode, e);
+              if (this.isSupportedDigits(e.key)) {
+                onChange(e.keyCode, e);
               }
               else {
                 onKeyDown(e.key, e);

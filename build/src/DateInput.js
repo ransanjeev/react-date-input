@@ -102,6 +102,11 @@ exports.DateSection = DateSection;
 })(exports.FormattedDateSections || (exports.FormattedDateSections = {}));
 var FormattedDateSections = exports.FormattedDateSections;
 ;
+Number['isInteger'] = Number['isInteger'] || function (value) {
+    return typeof value === 'number' &&
+        isFinite(value) &&
+        Math.floor(value) === value;
+};
 var DateInputComponent = (function (_super) {
     __extends(DateInputComponent, _super);
     function DateInputComponent(props) {
@@ -225,11 +230,11 @@ var DateInputComponent = (function (_super) {
         var selectedDateSection = this.state.selectedDateSection;
         var section = this.state.values[FormattedDateSections[selectedDateSection]];
         if (section.remainingInput == section.defaultLength) {
-            section.value = String.fromCharCode(keyChar);
+            section.value = e.key || e.data;
             section.remainingInput -= 1;
         }
         else if (section.remainingInput > 0) {
-            section.value += String.fromCharCode(keyChar);
+            section.value = section.value.concat(e.key || e.data);
             section.remainingInput -= 1;
         }
         this.state.values[FormattedDateSections[selectedDateSection]] = section;
@@ -265,7 +270,13 @@ exports.DateInputComponent = DateInputComponent;
 var DateInput = (function (_super) {
     __extends(DateInput, _super);
     function DateInput() {
+        var _this = this;
         _super.apply(this, arguments);
+        this.handleInput = function (event) {
+            if (_this.isSupportedDigits(event.data)) {
+                _this.props.onChange(undefined, event);
+            }
+        };
     }
     DateInput.prototype.getSelectedDateFormat = function () {
         if (this.props.dateFormate === DateFormats.DDMMYYYY) {
@@ -281,19 +292,21 @@ var DateInput = (function (_super) {
         var _a = selectedFormate[selectedSection], start = _a.start, end = _a.end;
         this.el.setSelectionRange(start, end);
     };
-    DateInput.prototype.isSupportedDigits = function (keyCode) {
-        return keyCode >= 48 && keyCode <= 57 || keyCode >= 96 && keyCode <= 105;
+    DateInput.prototype.componentDidMount = function () {
+        this.el.addEventListener('input', this.handleInput);
+    };
+    DateInput.prototype.componentWillUnmount = function () {
+        this.el.removeEventListener('input', this.handleInput);
+    };
+    DateInput.prototype.isSupportedDigits = function (key) {
+        return Number['isInteger'](parseInt(key));
     };
     DateInput.prototype.render = function () {
         var _this = this;
         var _a = this.props, onKeyDown = _a.onKeyDown, onSelect = _a.onSelect, onChange = _a.onChange;
         return (React.createElement("div", {"className": "form-group"}, React.createElement("div", {"className": "input-group"}, React.createElement("input", {"ref": (function (ref) { return _this.el = ref; }), "type": "text", "className": "form-control", "value": this.props.value, "onChange": function (e) { }, "onKeyDown": function (e) {
-            var keyCode = e.keyCode;
-            if (_this.isSupportedDigits(keyCode)) {
-                if (keyCode >= 96 && keyCode <= 105) {
-                    keyCode = keyCode - 48;
-                }
-                onChange(keyCode, e);
+            if (_this.isSupportedDigits(e.key)) {
+                onChange(e.keyCode, e);
             }
             else {
                 onKeyDown(e.key, e);
